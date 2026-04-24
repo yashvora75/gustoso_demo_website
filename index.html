@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gustoso — Soul of Italy in Mumbai</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--n:#0f2a44;--nd:#091c30;--nl:#1a3d5c;--w:#fff;--c:#f5f0e8;--g:#c9a84c;--gl:#e0c97a;--s:rgba(15,42,68,.3)}
+html{scroll-behavior:smooth}
+body{font-family:'Raleway',sans-serif;background:var(--c);color:#1a1a1a;overflow-x:hidden}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--nd)}::-webkit-scrollbar-thumb{background:var(--g);border-radius:4px}
+.loader{position:fixed;inset:0;z-index:10000;background:var(--nd);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s,visibility .8s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{width:120px;height:120px;border-radius:50%;background:var(--n);border:3px solid var(--g);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:60px;font-weight:700;color:var(--w);animation:pulse3d 1.5s ease-in-out infinite}
+@keyframes pulse3d{0%,100%{transform:scale(1) rotateY(0)}50%{transform:scale(1.08) rotateY(15deg)}}
+.loader-text{margin-top:24px;color:var(--g);font-weight:300;letter-spacing:6px;text-transform:uppercase;font-size:14px}
+nav{position:fixed;top:0;left:0;right:0;z-index:9999;padding:16px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(15,42,68,.95);backdrop-filter:blur(20px);box-shadow:0 4px 30px var(--s)}
+.nl{display:flex;align-items:center;gap:14px;cursor:pointer;text-decoration:none}
+.nli{width:48px;height:48px;border-radius:50%;background:var(--n);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--w);transition:transform .5s}
+.nl:hover .nli{transform:rotateY(180deg)}
+.nlt{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--w);letter-spacing:3px;text-transform:uppercase}
+.nks{display:flex;gap:8px;align-items:center}
+.nk{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:4px;transition:all .3s;position:relative;cursor:pointer;background:none;border:none;font-family:'Raleway',sans-serif}
+.nk:hover,.nk.active{color:var(--w);background:rgba(255,255,255,.1)}
+.nk.active::after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--g);border-radius:2px}
+.nc{background:var(--g);color:var(--nd);padding:12px 28px;border:none;border-radius:4px;font-family:'Raleway',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.nc:hover{background:var(--gl);transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,.4)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.ham span{width:28px;height:2px;background:var(--w);transition:all .3s;border-radius:2px}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.ham.open span:nth-child(2){opacity:0}.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.page{display:none;min-height:100vh;animation:pageIn .8s ease-out}.page.active{display:block}
+@keyframes pageIn{0%{opacity:0;transform:translateY(40px) rotateX(3deg)}100%{opacity:1;transform:none}}
+.hero{height:100vh;position:relative;background:linear-gradient(165deg,var(--nd),var(--n) 40%,var(--nl));display:flex;align-items:center;overflow:hidden}
+.hs{position:absolute;border-radius:50%;background:rgba(201,168,76,.05);animation:fl 20s ease-in-out infinite}
+.hs:nth-child(1){width:600px;height:600px;top:-200px;right:-100px}.hs:nth-child(2){width:400px;height:400px;bottom:-150px;left:-100px;animation-delay:-7s}.hs:nth-child(3){width:300px;height:300px;top:50%;left:60%;animation-delay:-13s}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.95)}}
+.hp{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:520px;height:520px}
+.hp img{width:100%;height:100%;object-fit:contain;animation:pizzaFloat 6s ease-in-out infinite;filter:drop-shadow(0 30px 60px rgba(0,0,0,.4))}
+@keyframes pizzaFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+.hc{position:relative;z-index:2;max-width:600px;padding-left:10%}
+.hb{display:inline-block;padding:8px 20px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:30px;color:var(--g);font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;animation:su 1s ease-out .5s both}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(48px,6vw,80px);font-weight:900;color:var(--w);line-height:1.05;margin-bottom:24px;animation:su 1s ease-out .7s both}
+.hero h1 em{font-style:italic;color:var(--g);display:block}
+.hd{font-size:17px;color:rgba(255,255,255,.65);line-height:1.7;font-weight:300;margin-bottom:40px;max-width:440px;animation:su 1s ease-out .9s both}
+.hbtns{display:flex;gap:16px;flex-wrap:wrap;animation:su 1s ease-out 1.1s both}
+.bp{background:var(--g);color:var(--nd);padding:16px 40px;border:none;border-radius:4px;font-family:'Raleway',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .4s;transform-style:preserve-3d}
+.bp:hover{background:var(--gl);transform:translateY(-3px) rotateX(-5deg);box-shadow:0 15px 35px rgba(201,168,76,.35)}
+.bs{background:transparent;color:var(--w);padding:16px 40px;border:1px solid rgba(255,255,255,.25);border-radius:4px;font-family:'Raleway',sans-serif;font-size:14px;font-weight:500;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .4s}
+.bs:hover{border-color:var(--g);color:var(--g);transform:translateY(-3px)}
+@keyframes su{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.si{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:11px;letter-spacing:3px;text-transform:uppercase;animation:bob 2s ease-in-out infinite}
+.sl{width:1px;height:50px;background:linear-gradient(to bottom,var(--g),transparent)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+.sec{padding:120px 8%;position:relative}.sdk{background:linear-gradient(170deg,var(--nd),var(--n));color:var(--w)}.slt{background:var(--c)}
+.st{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,56px);font-weight:700;margin-bottom:16px;line-height:1.15}
+.ss{font-size:14px;color:var(--g);letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:12px;display:block}
+.sd{font-size:16px;line-height:1.7;font-weight:300;max-width:550px;opacity:.7;margin-bottom:60px}
+.fg2{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.fc{padding:50px 36px;background:var(--w);border-radius:12px;position:relative;overflow:hidden;transition:all .5s;transform-style:preserve-3d;border:1px solid rgba(15,42,68,.06)}
+.fc:hover{transform:translateY(-10px) rotateY(3deg);box-shadow:0 25px 60px rgba(15,42,68,.12)}
+.fi{font-size:48px;margin-bottom:28px;display:block;transition:transform .4s}.fc:hover .fi{transform:scale(1.15) rotateZ(-8deg)}
+.fc h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--n);margin-bottom:14px}
+.fc p{font-size:15px;line-height:1.7;opacity:.6;font-weight:300}
+.fc::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--g),var(--n));transform:scaleX(0);transform-origin:left;transition:transform .5s}.fc:hover::before{transform:scaleX(1)}
+.tr{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.tc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:40px;transition:all .4s;transform-style:preserve-3d}
+.tc:hover{transform:translateY(-6px) rotateX(2deg);border-color:rgba(201,168,76,.2)}
+.tst{color:var(--g);font-size:18px;margin-bottom:20px}
+.ttx{font-size:16px;line-height:1.8;font-style:italic;font-family:'Playfair Display',serif;opacity:.8;margin-bottom:28px}
+.tau{display:flex;align-items:center;gap:14px}
+.tav{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--n));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--w);font-family:'Playfair Display',serif}
+.tnm{font-weight:600;font-size:15px}.trl{font-size:12px;opacity:.5;margin-top:2px;letter-spacing:1px}
+/* Menu */
+.mt{display:flex;gap:8px;margin-bottom:50px;flex-wrap:wrap}
+.mtb{padding:10px 22px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);border-radius:4px;font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.mtb:hover,.mtb.active{background:var(--g);color:var(--nd);border-color:var(--g)}
+.mcat{margin-bottom:50px}.mcat-t{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--g);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ml{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.mi{padding:18px 22px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;transition:all .4s;transform-style:preserve-3d}
+.mi:hover{transform:translateY(-4px) rotateX(2deg);border-color:rgba(201,168,76,.2);box-shadow:0 12px 30px rgba(0,0,0,.2)}
+.mih{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:12px}
+.min{font-family:'Playfair Display',serif;font-size:16px;font-weight:700}
+.mip{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--g);white-space:nowrap}
+.mid{font-size:13px;opacity:.4;line-height:1.5;font-weight:300}
+/* About */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.siw{position:relative;perspective:600px}
+.sim{width:100%;aspect-ratio:4/5;background:linear-gradient(135deg,var(--n),var(--nl));border-radius:12px;overflow:hidden;transform:rotateY(-8deg) rotateX(3deg);transition:transform .6s;box-shadow:25px 25px 60px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:120px}
+.siw:hover .sim{transform:none}
+.sia{position:absolute;top:-20px;right:-20px;width:120px;height:120px;border:2px solid var(--g);border-radius:12px;z-index:-1}
+.sts{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:50px}
+.stn{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:var(--g);display:block}
+.stl{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.6;margin-top:4px}
+/* Contact */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.cii{display:flex;gap:20px;align-items:start;margin-bottom:32px}
+.cic{width:56px;height:56px;border-radius:12px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.cii h4{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:6px}.cii p{font-size:14px;opacity:.6;line-height:1.6}
+.mb{width:100%;height:450px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}.mb iframe{width:100%;height:100%;border:0}
+/* Gallery */
+.gg{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,280px);gap:20px}
+.gi{border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,var(--n),var(--nl));display:flex;align-items:center;justify-content:center;font-size:60px;cursor:pointer;transition:all .5s;transform-style:preserve-3d}
+.gi:hover{transform:scale(1.03) rotateX(2deg);box-shadow:0 20px 50px rgba(0,0,0,.4);z-index:2}
+.gi:nth-child(1){grid-column:span 2;grid-row:span 2;font-size:100px}.gi:nth-child(4){grid-column:span 2}
+.gov{position:absolute;inset:0;background:linear-gradient(to top,rgba(9,28,48,.9),transparent 60%);display:flex;align-items:flex-end;padding:28px;opacity:0;transition:opacity .4s}
+.gi:hover .gov{opacity:1}
+.gov h4{font-family:'Playfair Display',serif;font-size:22px;color:var(--w);margin-bottom:4px}.gov p{font-size:13px;color:var(--g);letter-spacing:2px;text-transform:uppercase}
+/* CTA */
+.cta{padding:120px 8%;text-align:center;background:linear-gradient(170deg,var(--n),var(--nd));position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50%,rgba(201,168,76,.08),transparent 60%)}
+.ctc{position:relative;z-index:2}.ctc h2{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,56px);color:var(--w);margin-bottom:20px}.ctc p{font-size:17px;color:rgba(255,255,255,.5);margin-bottom:40px;font-weight:300}
+/* Footer */
+footer{background:var(--nd);padding:80px 8% 40px;color:var(--w)}
+.ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+.ftb p{font-size:14px;opacity:.5;line-height:1.8;margin-top:16px;max-width:300px}
+.ftc h4{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:24px;color:var(--g)}
+.ftc a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:14px;margin-bottom:12px;transition:color .3s}.ftc a:hover{color:var(--g)}
+.fbt{border-top:1px solid rgba(255,255,255,.06);padding-top:30px;display:flex;justify-content:space-between;align-items:center}
+.fbt p{font-size:13px;opacity:.4}
+.fsc{display:flex;gap:16px}
+.fsi{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .3s;text-decoration:none}
+.fsi:hover{background:var(--g);border-color:var(--g);transform:translateY(-3px)}
+/* Reveal */
+.rv{opacity:0;transform:translateY(50px);transition:all .8s cubic-bezier(.16,1,.3,1)}.rv.vis{opacity:1;transform:none}
+.r3{opacity:0;transform:translateY(50px) rotateX(8deg);transition:all .9s cubic-bezier(.16,1,.3,1)}.r3.vis{opacity:1;transform:none}
+@media(max-width:1024px){.hp{width:380px;height:380px;right:3%}.sg,.cg{grid-template-columns:1fr;gap:50px}.fg2{grid-template-columns:repeat(2,1fr)}.gg{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,220px)}.gi:nth-child(1){grid-column:span 2;grid-row:span 1}.gi:nth-child(4){grid-column:span 1}.ftg{grid-template-columns:1fr 1fr}.tr{grid-template-columns:1fr}}
+@media(max-width:768px){nav{padding:16px 24px}.nks{display:none}.ham{display:flex}.nks.mob{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(15,42,68,.98);backdrop-filter:blur(20px);padding:20px 24px;border-top:1px solid rgba(255,255,255,.05)}.hero{text-align:center}.hc{padding:0 24px;max-width:100%}.hd{margin-left:auto;margin-right:auto}.hbtns{justify-content:center}.hp{display:none}.sec{padding:80px 6%}.fg2,.ml{grid-template-columns:1fr}.gg{grid-template-columns:1fr;grid-template-rows:auto}.gi:nth-child(1){grid-column:span 1}.gi{height:220px}.ftg{grid-template-columns:1fr;gap:40px}.fbt{flex-direction:column;gap:20px;text-align:center}.sim{transform:none}.mb{height:300px}}
+</style>
+</head>
+<body>
+<div class="loader" id="loader"><div class="loader-logo">G</div><div class="loader-text">Gustoso</div></div>
+<nav id="navbar">
+  <a class="nl" onclick="go('home')"><div class="nli">G</div><span class="nlt">Gustoso</span></a>
+  <div class="nks" id="navLinks">
+    <button class="nk active" data-page="home" onclick="go('home')">Home</button>
+    <button class="nk" data-page="menu" onclick="go('menu')">Menu</button>
+    <button class="nk" data-page="about" onclick="go('about')">About</button>
+    <button class="nk" data-page="gallery" onclick="go('gallery')">Gallery</button>
+    <button class="nc" data-page="contact" onclick="go('contact')">Contact</button>
+  </div>
+  <button class="ham" id="ham" onclick="tMob()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hs"></div><div class="hs"></div><div class="hs"></div>
+    <div class="hc">
+      <h1>The Soul of <em>Italy</em></h1>
+      <p class="hd">Music in the foreground and cocktails that don't hang back. A volcano of flavours made bold by sun, soil and sea. Benvenuto, andiamo.</p>
+      <div class="hbtns"><button class="bp" onclick="go('menu')">Explore Menu</button><button class="bs" onclick="go('about')">Our Story</button></div>
+    </div>
+    <div class="hp"><img src="pizza_gustoso_removebg.png" alt="Gustoso Pizza"></div>
+    <div class="si"><div class="sl"></div>Scroll</div>
+  </section>
+  <section class="sec slt">
+    <div style="text-align:center;margin-bottom:70px"><span class="ss">Why Gustoso</span><h2 class="st" style="color:var(--n)">The Art of <em style="color:var(--g)">Perfect</em> Pizza</h2></div>
+    <div class="fg2">
+      <div class="fc r3"><span class="fi">🔥</span><h3>Stone Oven Baked</h3><p>Baked at 450°C in traditional Italian stone ovens for the perfect crispy yet chewy crust every time.</p></div>
+      <div class="fc r3"><span class="fi">🌿</span><h3>Fresh Ingredients</h3><p>San Marzano tomatoes, fresh mozzarella, hand-picked basil — only the finest make it to your plate.</p></div>
+      <div class="fc r3"><span class="fi">👨‍🍳</span><h3>Master Pizzaiolo</h3><p>Trained in Naples, bringing authentic Italian techniques and secret family recipes to every pie.</p></div>
+      <div class="fc r3"><span class="fi">⏱️</span><h3>48-Hour Dough</h3><p>Slow-fermented for 48 hours, developing complex flavors and the perfect airy texture.</p></div>
+      <div class="fc r3"><span class="fi">🍷</span><h3>Curated Wines</h3><p>Exceptional Italian wine list featuring Sassicaia, Tignanello, and fine selections from Tuscany & Piedmont.</p></div>
+      <div class="fc r3"><span class="fi">🍸</span><h3>Signature Cocktails</h3><p>Crafted cocktails that don't hang back — from House Negroni to the Kaffir Gimlet.</p></div>
+    </div>
+  </section>
+  <section class="sec sdk">
+    <div style="text-align:center;margin-bottom:70px"><span class="ss">Our Family</span><h2 class="st">Rue du <em style="color:var(--g)">Liban</em></h2></div>
+    <div style="max-width:700px;margin:0 auto;text-align:center" class="rv">
+      <p style="font-size:20px;font-family:'Playfair Display',serif;color:rgba(255,255,255,.8);line-height:1.8;margin-bottom:24px;font-style:italic">Our sister restaurant, part of Indianapoli</p>
+      <p style="font-size:16px;opacity:.55;line-height:1.8;font-weight:300">Bringing diverse Mediterranean flavours under one roof. Rue du Liban offers an exquisite Lebanese dining experience — the perfect complement to Gustoso's Italian soul. Together, we celebrate the rich culinary heritage of the Mediterranean coast.</p>
+    </div>
+  </section>
+  <section class="sec sdk" style="background:linear-gradient(170deg,var(--nd),var(--n))">
+    <div style="text-align:center;margin-bottom:70px"><span class="ss">Testimonials</span><h2 class="st">What Our Guests Say</h2></div>
+    <div class="tr">
+      <div class="tc r3"><div class="tst">★★★★★</div><p class="ttx">"The best pizza outside Naples. The crust is incredible — crispy, airy, full of flavor."</p><div class="tau"><div class="tav">A</div><div><div class="tnm">Arjun Mehta</div><div class="trl">Food Critic</div></div></div></div>
+      <div class="tc r3"><div class="tst">★★★★★</div><p class="ttx">"Their Quattro Formaggi is extraordinary. The wine list is impeccable. Our favourite spot."</p><div class="tau"><div class="tav">P</div><div><div class="tnm">Priya Sharma</div><div class="trl">Regular Guest</div></div></div></div>
+      <div class="tc r3"><div class="tst">★★★★★</div><p class="ttx">"From ambiance to cocktails — everything screams premium quality. Our go-to Friday night spot."</p><div class="tau"><div class="tav">R</div><div><div class="tnm">Rohan Kapoor</div><div class="trl">Blogger</div></div></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- MENU -->
+<div class="page" id="page-menu">
+  <section class="sec sdk" style="padding-top:160px;min-height:100vh">
+    <span class="ss">Our Menu</span>
+    <h2 class="st" style="margin-bottom:8px">Buon <em style="color:var(--g)">Appetito!</em></h2>
+    <p class="sd">A volcano of flavours — made bold by sun, soil and sea.</p>
+    <div class="mt" id="menuTabs"></div>
+    <div id="menuCt"></div>
+    <p style="margin-top:40px;font-size:12px;opacity:.3;line-height:1.6">Please inform the manager of any allergies or special dietary needs.<br>Government taxes and voluntary 10% service charge applicable.</p>
+  </section>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <section class="sec sdk" style="padding-top:160px">
+    <div class="sg">
+      <div class="rv">
+        <span class="ss">Our Story</span>
+        <h2 class="st">A Volcano of <em style="color:var(--g)">Flavours</em></h2>
+        <p class="sd" style="opacity:.6">Music in the foreground and cocktails that don't hang back. A volcano of flavours made bold by sun, soil and sea. We bring the soul of Italy to the heart of Mumbai. Benvenuto, andiamo.</p>
+        <p style="font-size:15px;line-height:1.8;opacity:.5;margin-bottom:30px">Born from a deep love for authentic Italian cuisine, Gustoso is where tradition meets innovation. Every dish is a tribute to centuries of Italian craft — from slow-fermented dough to house-made sauces using San Marzano tomatoes.</p>
+        <p style="font-size:15px;line-height:1.8;opacity:.5">Rue du Liban, our sister restaurant, is part of the Indianapoli family — bringing diverse Mediterranean flavours under one roof.</p>
+        <div class="sts">
+          <div style="text-align:center"><span class="stn">10+</span><div class="stl">Years</div></div>
+          <div style="text-align:center"><span class="stn">50K</span><div class="stl">Happy Guests</div></div>
+          <div style="text-align:center"><span class="stn">100+</span><div class="stl">Menu Items</div></div>
+        </div>
+      </div>
+      <div class="siw r3"><div class="sim">🍕</div><div class="sia"></div></div>
+    </div>
+  </section>
+  <section class="sec slt">
+    <div style="text-align:center;margin-bottom:70px"><span class="ss" style="color:var(--n)">Our Values</span><h2 class="st" style="color:var(--n)">What We Stand For</h2></div>
+    <div class="fg2">
+      <div class="fc r3"><span class="fi">🤝</span><h3>Community First</h3><p>Building bonds over great food. Gustoso is where memories are made.</p></div>
+      <div class="fc r3"><span class="fi">🌍</span><h3>Sustainability</h3><p>Eco-friendly packaging and locally sourced produce — committed to the planet.</p></div>
+      <div class="fc r3"><span class="fi">❤️</span><h3>Made With Love</h3><p>Every ingredient, technique, and dish crafted with genuine care and passion.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- GALLERY -->
+<div class="page" id="page-gallery">
+  <section class="sec sdk" style="padding-top:160px;min-height:100vh">
+    <span class="ss">Gallery</span>
+    <h2 class="st" style="margin-bottom:12px">Feast Your <em style="color:var(--g)">Eyes</em></h2>
+    <p class="sd">A visual journey through our kitchen and creations.</p>
+    <div class="gg">
+      <div class="gi r3">🍕<div class="gov"><div><h4>Margherita</h4><p>The Classic</p></div></div></div>
+      <div class="gi r3">🔥<div class="gov"><div><h4>Stone Oven</h4><p>450°C Perfection</p></div></div></div>
+      <div class="gi r3">🍝<div class="gov"><div><h4>Fresh Pasta</h4><p>Handmade Daily</p></div></div></div>
+      <div class="gi r3">🍷<div class="gov"><div><h4>Wine Cellar</h4><p>Italian Finest</p></div></div></div>
+      <div class="gi r3">🍸<div class="gov"><div><h4>Cocktails</h4><p>Signature Crafted</p></div></div></div>
+      <div class="gi r3">👨‍🍳<div class="gov"><div><h4>Our Chef</h4><p>Naples Trained</p></div></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <section class="sec sdk" style="padding-top:160px;min-height:100vh">
+    <span class="ss">Find Us</span>
+    <h2 class="st" style="margin-bottom:12px">Visit <em style="color:var(--g)">Gustoso</em></h2>
+    <p class="sd">We bring the soul of Italy to the heart of Mumbai.</p>
+    <div class="cg">
+      <div>
+        <div class="cii"><div class="cic">📍</div><div><h4>Location</h4><p>Kwality House, August Kranti Marg<br>Kemps Corner, Mumbai 400006, India</p></div></div>
+        <div class="cii"><div class="cic">🕐</div><div><h4>Opening Hours</h4><p>Everyday: 12:00 – 14:30<br>Mon – Thu: 19:00 – 23:00<br>Fri – Sat: 19:00 – 00:00</p></div></div>
+        <div class="cii"><div class="cic">📞</div><div><h4>Call Us</h4><p>+91 22 4567 8900</p></div></div>
+        <div class="cii"><div class="cic">📷</div><div><h4>Instagram</h4><p>@gustoso.mumbai</p></div></div>
+        <div class="cii"><div class="cic">🏠</div><div><h4>Sister Restaurant</h4><p>Rue du Liban — part of Indianapoli</p></div></div>
+      </div>
+      <div class="mb"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120616.77029903722!2d72.76493752798618!3d19.139476696260957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c90d425913d9%3A0xaf77b0c9c615ad1c!2sGustoso!5e0!3m2!1sen!2sin!4v1777009780650!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="ftg">
+    <div class="ftb"><div class="nl" onclick="go('home')" style="cursor:pointer"><div class="nli">G</div><span class="nlt">Gustoso</span></div><p>Music in the foreground and cocktails that don't hang back. A volcano of flavours — made bold by sun, soil and sea.</p></div>
+    <div class="ftc"><h4>Explore</h4><a href="#" onclick="go('home')">Home</a><a href="#" onclick="go('menu')">Menu</a><a href="#" onclick="go('about')">About</a><a href="#" onclick="go('gallery')">Gallery</a><a href="#" onclick="go('contact')">Contact</a></div>
+    <div class="ftc"><h4>Hours</h4><a href="#">Everyday: 12:00–14:30</a><a href="#">Mon–Thu: 19:00–23:00</a><a href="#">Fri–Sat: 19:00–00:00</a></div>
+    <div class="ftc"><h4>Family</h4><a href="#">Rue du Liban</a><a href="#">Indianapoli</a><a href="#">Allergen Info</a><a href="#">Privacy Policy</a></div>
+  </div>
+  <div class="fbt"><p>&copy; 2024 Gustoso. Kwality House, Kemps Corner, Mumbai.</p><div class="fsc"><a class="fsi" title="Instagram">📷</a><a class="fsi" title="Facebook">📘</a></div></div>
+</footer>
+
+
+<script>
+const M={"Soup":[{n:"Minestrone",p:"550",d:"Farm fresh vegetables, borlotti beans, basil pesto"}],"Salad":[{n:"Kale e Quinoa",p:"825",d:"Roasted almonds, bell peppers, guacamole, honey lemon vinaigrette"},{n:"Caesar",p:"700",d:"Grilled iceberg lettuce, Caesar dressing, breadcrumbs, grana padano"},{n:"Beetroot",p:"825",d:"Roasted beetroot, arugula, onions, walnut tuile, goat cheese cream, sherry vinaigrette"},{n:"Orange e Fennel",p:"750",d:"Kalamata olives, arugula, pomegranate, carrots, roasted pistachio, orange vinaigrette"}],"Antipasti":[{n:"Marinated Olives",p:"600",d:"Chilli flakes, garlic, herbs"},{n:"Grilled Vegetables",p:"650",d:"With salsa verde"},{n:"Burrata",p:"925",d:"Sundried tomato pesto, roasted almonds, basil"},{n:"Caponata Siciliana",p:"795",d:"Fried aubergine, celery, olives, capers, raisins, tomato sauce, pine nuts, agrodolce"},{n:"Lamb Meatballs",p:"875",d:"San Marzano tomato sauce, arugula, breadcrumbs"},{n:"Ricotta e Truffle Honey",p:"995",d:"House made ricotta, roasted pistachio, sourdough crackers"},{n:"Parmigiana di Melanzane",p:"825",d:"Baked aubergine, San Marzano tomato sauce, parmesan, mozzarella, basil"},{n:"Supplì",p:"795",d:"Roman street food; Carnaroli rice croquettes, mozzarella, arrabbiata sauce"},{n:"Truffle Fries",p:"775",d:"Grated parmesan, truffle oil"},{n:"Chicken Roulade",p:"825",d:"Stuffed with spinach, parmesan, mozzarella, white wine butter sauce"},{n:"Gamberoni",p:"850",d:"King prawns, garlic, olive oil, red chillies, cherry tomatoes"}],"Bread":[{n:"House Bread",p:"400",d:"House made sourdough, olive oil and balsamic dip"},{n:"Giulio's 'Montanara'",p:"750",d:"Fried pizza crust; San Marzano tomato sauce, mozzarella, parmesan, basil"},{n:"Garlic Pizza",p:"575",d:"Mini pizza, garlic infused olive oil, herbs (add mozzarella ₹175)"},{n:"Bruschetta",p:"675",d:"Toasted sourdough, garlic marinated cherry tomatoes, basil, EVOO, balsamic reduction"},{n:"Little Clouds",p:"775",d:"Light fluffy dough; anchovies, burrata, truffle oil, parsley"}],"Pasta & Risotto":[{n:"Ravioli",p:"925",d:"Ricotta, spinach, brown butter and sage sauce"},{n:"Penne all'Arrabbiata",p:"825",d:"Spicy San Marzano tomato sauce, chillies, garlic"},{n:"Fettuccine alla Vodka",p:"925",d:"King prawns, San Marzano tomato sauce, cream, Grana Padano"},{n:"Pesto e Burrata",p:"995",d:"Casarecce, burrata, basil pesto, pine nuts"},{n:"Spaghetti Cacio e Pepe",p:"995",d:"Pecorino romano, black pepper"},{n:"Fettuccine alla Bolognese",p:"925",d:"Lamb ragù, mint leaves"},{n:"Gnocchi alla Sorrentina",p:"825",d:"San Marzano tomato sauce, mozzarella, parmesan"},{n:"Spaghetti Aglio Olio e Peperoncino",p:"750",d:"Garlic, olive oil, red chillies"},{n:"Mushroom Risotto",p:"995",d:"Carnaroli rice, truffle oil, Grana Padano"},{n:"Zafferano",p:"875",d:"Milanese saffron risotto"}],"Pizza":[{n:"Margherita",p:"750",d:"Tomato sauce, mozzarella, fresh basil, parmesan, EVOO"},{n:"Spinach e Scamorza",p:"895",d:"Baby spinach, scamorza, garlic cream, tomato sauce, mozzarella"},{n:"Vegetariana",p:"875",d:"Mozzarella, tomato sauce, sautéed onions, Kalamata olives, jalapeño, bell pepper reduction"},{n:"Burrata",p:"925",d:"Tomato sauce, burrata, parmesan crisp, fresh basil"},{n:"Puttanesca",p:"950",d:"Tomato sauce, anchovies, capers, Kalamata olives, garlic, parsley"},{n:"Arrabbiata",p:"825",d:"Mozzarella, spicy tomato sauce, garlic, jalapeño"},{n:"Viva l'Italia",p:"895",d:"Basil pesto, tomato sauce, mozzarella, truffle oil"},{n:"Diavola",p:"950",d:"Spicy salami, tomato sauce, jalapeño, mozzarella"},{n:"Pollo Piccante",p:"850",d:"Spicy minced chicken, tomato sauce, mozzarella, jalapeño"},{n:"Prosciutto di Parma",p:"1025",d:"Parma ham, mozzarella, arugula, tomato sauce, parmesan"},{n:"Quattro Formaggi",p:"950",d:"Mozzarella, gorgonzola, scamorza, parmesan, balsamic glaze"},{n:"Mushrooms e Truffle",p:"1025",d:"Mushrooms, mozzarella, arugula, truffle oil"},{n:"Calabria",p:"850",d:"'Nduja, aubergine, mozzarella, cherry tomatoes, fresh basil"}],"Mains":[{n:"Salmon",p:"1250",d:"Pan seared Norwegian salmon, sautéed spinach, onions, capers, lemon sauce"},{n:"Lamb Chops",p:"2500",d:"Artichoke and pecorino purée, potato crisps"},{n:"Pollo alla Romana",p:"1050",d:"Braised chicken, tomato and bell pepper sauce, mashed potatoes, capers"}],"Desserts":[{n:"Tiramisu",p:"675",d:"Coffee, savoiardi biscuits, mascarpone cream"},{n:"Panna Cotta",p:"575",d:"Vanilla cream pudding, amaretti crumble"},{n:"Torta Caprese",p:"575",d:"Dark chocolate & almond flourless cake, stracciatella gelato"},{n:"Dark Chocolate Mousse",p:"600",d:""},{n:"Affogato",p:"425",d:"Espresso, stracciatella gelato"},{n:"Gelato",p:"400",d:"Dark chocolate & orange / Stracciatella / Hazelnut"},{n:"Fresh Fruit Sorbet",p:"425",d:""}],"Signature Cocktails":[{n:"Habanero Heatwave",p:"850",d:"Jose Cuervo, grapefruit syrup, lemon juice, habanero bitters"},{n:"House Negroni",p:"1050",d:"Tanqueray, Campari, Vermouth Rosso, pink peppercorn, vanilla, grapefruit peel"},{n:"Martini",p:"950",d:"Tanqueray, Dry Vermouth, blend of bitters"},{n:"Ciao Bella",p:"900",d:"Tanqueray, Campari, simple syrup, lemon, fresh watermelon, Tajin salt rim"},{n:"Kaffir Gimlet",p:"925",d:"Kaffir lime-infused Tanqueray, lemongrass syrup, lemon juice"},{n:"Something Very Special",p:"975",d:"Hendricks, passion fruit, lemongrass syrup, lemon, egg white"},{n:"After the Storm",p:"975",d:"Monkey Shoulder, lemon, fresh ginger, honey vanilla syrup, mint"},{n:"South Side",p:"850",d:"Tanqueray, lemon juice, simple syrup, fresh mint"},{n:"Framboise Valley",p:"850",d:"Absolut, raspberry purée, peach syrup, cinnamon syrup, lemon"},{n:"Jimador",p:"1025",d:"Mezcal, honey vanilla syrup, lemon, guava, grapefruit bitters, Tajin salt rim"}],"Spritz":[{n:"Aperol Spritz",p:"950",d:"Aperol, Cinzano Prosecco, soda, orange slice"},{n:"Campari Spritz",p:"950",d:"Campari, Cinzano Prosecco, soda, orange slice"},{n:"Select Spritz",p:"950",d:"Venetian classic; Select, Cinzano Prosecco, soda, orange slice"}],"Mocktails":[{n:"Island Time",p:"450",d:"Pineapple, ginger, honey vanilla syrup, mint, lemon, soda"},{n:"Siam Fresh",p:"400",d:"Lemongrass syrup, lemon juice, fresh basil, soda"},{n:"Berry Bunch Ice Tea",p:"450",d:"Mixed berries, lemon, simple syrup"},{n:"True Passion",p:"500",d:"Passion fruit, grapefruit, lemon, cinnamon syrup"},{n:"Crimson Sunset",p:"450",d:"Raspberry, honey vanilla syrup, lemon, orange juice"}],"Coffee & Tea":[{n:"Espresso",p:"300",d:""},{n:"Double Espresso",p:"350",d:""},{n:"Macchiato",p:"300",d:""},{n:"Caffè Latte",p:"400",d:""},{n:"Cappuccino",p:"400",d:""},{n:"Berry Bunch Tea",p:"300",d:"Cranberries, hibiscus, blueberry, cherries, strawberries, blackcurrant"},{n:"Green Lemonade Tea",p:"300",d:"Sencha green tea with lemon"},{n:"Bianca Chamomile Tea",p:"300",d:"Chamomile and orange infusion"}],"Digestif":[{n:"Limoncello",p:"750",d:""},{n:"Amaro Montenegro",p:"600",d:""}],"Soft Drinks":[{n:"Still Water",p:"160",d:""},{n:"Sparkling Water",p:"200",d:""},{n:"Coke / Diet Coke",p:"175",d:""},{n:"Sprite",p:"175",d:""},{n:"Ginger Ale",p:"175",d:""},{n:"Red Bull",p:"275",d:""},{n:"Sepoy Tonic Water",p:"250",d:""},{n:"O'Cean Soda",p:"150",d:""}],"Sparkling Wine":[{n:"Pasqua Prosecco DOC Audrey Hepburn",p:"7000",d:"Bottle"},{n:"Cinzano Prosecco DOC",p:"1300/6500",d:"Gls/Bot"},{n:"Chandon Rosé",p:"1100/5500",d:"Gls/Bot"},{n:"Chandon Brut",p:"1100/5500",d:"Gls/Bot"}],"White Wine":[{n:"Pasqua delle Venezie — Pinot Grigio",p:"1300/6500",d:"Gls/Bot"},{n:"Folonari — Chardonnay",p:"1300/6500",d:"Gls/Bot"},{n:"Alois Lageder Riff — Pinot Grigio",p:"1400/7000",d:"Gls/Bot"},{n:"Sensi Collezione — Vermentino",p:"1400/7000",d:"Gls/Bot"},{n:"Domäne Wachau — Grüner Veltliner",p:"1700/8500",d:"Gls/Bot"},{n:"Michele Chiarlo Gavi di Gavi — Cortese",p:"12000",d:"Bot"},{n:"Cervaro della Sala — Chardonnay",p:"25000",d:"Bot"},{n:"Fratelli Bianco — Sangiovese",p:"1000/5000",d:"Gls/Bot"},{n:"Reveilo — Grillo",p:"800/4000",d:"Gls/Bot"}],"Red Wine — Toscana":[{n:"Pasqua Chianti DOCG",p:"1400/7000",d:"Sangiovese Blend — Gls/Bot"},{n:"Marchesi Mazzei Poggio Badiola IGT",p:"1600/8000",d:"Sangiovese, Merlot — Gls/Bot"},{n:"Vegante Chianti Superiore DOCG",p:"1400/7000",d:"Sangiovese, Malvasia — Gls/Bot"},{n:"Castello Fonterutoli Chianti Classico",p:"2000/10000",d:"Sangiovese, Malvasia Nera — Gls/Bot"},{n:"Le Difese Tenuta San Guido",p:"10000",d:"Cab Sauv, Sangiovese — Bot"},{n:"Le Macchiole Bolgheri Rosso",p:"12000",d:"Merlot, Syrah — Bot"},{n:"Castello di Ama Chianti Classico",p:"13000",d:"Sangiovese, Merlot — Bot"},{n:"Castello di Ama Il Chiuso IGT",p:"16000",d:"Pinot Nero — Bot"},{n:"Le Volte dell'Ornellaia IGT",p:"15000",d:"Merlot, Sangiovese — Bot"},{n:"Guidalberto Tenuta San Guido IGT",p:"20000",d:"Cab Sauv, Merlot — Bot"},{n:"Sensi Brunello di Montalcino DOCG",p:"18000",d:"Sangiovese — Bot"},{n:"Le Cupole Tenuta di Trinoro IGT",p:"20000",d:"Cab Franc, Merlot — Bot"},{n:"Tignanello",p:"40000",d:"Sangiovese, Cab Sauv — Bot"},{n:"Siepi Mazzei IGT",p:"40000",d:"Merlot, Sangiovese — Bot"},{n:"Sassicaia",p:"55000",d:"Cab Franc, Cab Sauv — Bot"}],"Red Wine — Piedmonte & Altro":[{n:"Pasqua di Puglia IGT — Sangiovese",p:"1400/7000",d:"Gls/Bot"},{n:"Pasqua d'Abruzzo — Montepulciano",p:"1300/6500",d:"Gls/Bot"},{n:"Famiglia Pasqua Valpolicella Ripasso",p:"9000",d:"Corvina, Corvinone — Bot"},{n:"Famiglia Pasqua Amarone",p:"17000",d:"Corvina, Rondinella — Bot"},{n:"Povero Barbera d'Asti",p:"1300/6500",d:"Gls/Bot"},{n:"Matteo Correggia Roero Rosso",p:"8000",d:"Nebbiolo — Bot"},{n:"Michele Chiarlo Barolo DOCG",p:"12000",d:"Nebbiolo — Bot"},{n:"Suoi Barolo",p:"15000",d:"Nebbiolo — Bot"},{n:"Domenico Clerico Pajana Barolo",p:"30000",d:"Nebbiolo — Bot"},{n:"Fratelli Sette — Sangiovese (India)",p:"1000/5000",d:"Gls/Bot"},{n:"Reveilo — Nero D'Avola (India)",p:"800/4000",d:"Gls/Bot"}],"Rosé":[{n:"Castello di Ama Purple Rosé",p:"12000",d:"Bot"},{n:"Pasqua 11 Minutes Rosé",p:"1500/7500",d:"Gls/Bot"},{n:"Fratelli M/S Rosé",p:"1100/5500",d:"Gls/Bot"}],"Beer":[{n:"Hoegaarden",p:"600",d:""},{n:"Corona",p:"600",d:""},{n:"Kronenbourg 1664",p:"650",d:""},{n:"Peoples Bombay",p:"600",d:""},{n:"Kingfisher Ultra",p:"500",d:""}]};
+
+const TG={"All":null,"Food":["Soup","Salad","Antipasti","Bread","Pasta & Risotto","Pizza","Mains","Desserts"],"Pizza":["Pizza"],"Pasta":["Pasta & Risotto"],"Cocktails":["Signature Cocktails","Spritz","Mocktails"],"Wine":["Sparkling Wine","White Wine","Red Wine — Toscana","Red Wine — Piedmonte & Altro","Rosé"],"Drinks":["Coffee & Tea","Digestif","Soft Drinks","Beer"]};
+
+function rT(){document.getElementById('menuTabs').innerHTML=Object.keys(TG).map((k,i)=>`<button class="mtb${i?'':' active'}" onclick="fC('${k}',this)">${k}</button>`).join('')}
+function fC(k,b){document.querySelectorAll('.mtb').forEach(t=>t.classList.remove('active'));b.classList.add('active');rM(k)}
+function rM(f='All'){const c=document.getElementById('menuCt'),cats=f==='All'?Object.keys(M):TG[f]||Object.keys(M);c.innerHTML=cats.map(cat=>{const items=M[cat];if(!items)return'';return`<div class="mcat r3"><h3 class="mcat-t">${cat}</h3><div class="ml">${items.map(i=>`<div class="mi"><div class="mih"><span class="min">${i.n}</span><span class="mip">₹${i.p}</span></div>${i.d?`<p class="mid">${i.d}</p>`:''}</div>`).join('')}</div></div>`}).join('');obs()}
+
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.nk').forEach(l=>l.classList.remove('active'));document.querySelector(`.nk[data-page="${p}"]`)?.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});cMob();setTimeout(obs,100)}
+function tMob(){document.getElementById('ham').classList.toggle('open');document.getElementById('navLinks').classList.toggle('mob')}
+function cMob(){document.getElementById('ham').classList.remove('open');document.getElementById('navLinks').classList.remove('mob')}
+function obs(){const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.rv,.r3').forEach(el=>o.observe(el))}
+window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1500);rT();rM();obs()});
+</script>
+</body>
+</html>
